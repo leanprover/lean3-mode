@@ -10,7 +10,7 @@
 ;; Maintainer: Soonho Kong   <soonhok@cs.cmu.edu>
 ;; Created: Jan 09, 2014
 ;; Keywords: languages
-;; Package-Requires: ((dash "2.12.1") (dash-functional "1.2.0") (s "1.10.0") (f "0.19.0") (company "0.9.3"))
+;; Package-Requires: ((dash "2.12.1") (dash-functional "1.2.0") (s "1.10.0") (f "0.19.0") (company "0.9.3") (flycheck "30"))
 ;; Version: 0.1
 ;; URL: https://github.com/leanprover/lean/blob/master/src/emacs
 ;;
