@@ -1,3 +1,4 @@
+;;; lean-mode.el --- A major mode for the Lean language
 ;; -*- lexical-binding: t -*-
 ;;
 ;;; lean-mode.el --- A major mode for the Lean theorem prover
@@ -48,16 +49,18 @@
 (require 'lean-right-click)
 (require 'lean-dev)
 
+;;; Code:
+
 (defun lean-compile-string (exe-name args file-name)
-  "Concatenate exe-name, args, and file-name"
+  "Concatenate EXE-NAME, ARGS, and FILE-NAME."
   (format "%s %s %s" exe-name args file-name))
 
 (defun lean-create-temp-in-system-tempdir (file-name prefix)
-  "Create a temp lean file and return its name"
+  "Create a temp lean file and return its name."
   (make-temp-file (or prefix "flymake") nil (f-ext file-name)))
 
 (defun lean-execute (&optional arg)
-  "Execute Lean in the current buffer"
+  "Execute Lean in the current buffer."
   (interactive)
   (when (called-interactively-p 'any)
     (setq arg (read-string "arg: " arg)))
