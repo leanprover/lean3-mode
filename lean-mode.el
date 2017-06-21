@@ -1,5 +1,4 @@
-;;; lean-mode.el --- A major mode for the Lean language
-;; -*- lexical-binding: t -*-
+;;; lean-mode.el --- A major mode for the Lean language -*- lexical-binding: t -*-
 ;;
 ;;; lean-mode.el --- A major mode for the Lean theorem prover
 ;;
