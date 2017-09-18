@@ -31,8 +31,8 @@
 (require 'cl-lib)
 (require 'pcase)
 (require 'lean-require)
-(require 'eri)
 (require 'flycheck)
+(require 'lean-eri)
 (require 'lean-util)
 (require 'lean-settings)
 (require 'lean-input)
@@ -92,7 +92,7 @@
 (defun lean-tab-indent ()
   (interactive)
   (cond ((looking-back (rx line-start (* white)) nil)
-         (eri-indent))
+         (lean-eri-indent))
         (t (indent-for-tab-command))))
 
 (defun lean-set-keys ()
