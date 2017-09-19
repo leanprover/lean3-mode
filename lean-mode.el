@@ -30,7 +30,6 @@
 
 (require 'cl-lib)
 (require 'pcase)
-(require 'lean-require)
 (require 'flycheck)
 (require 'lean-eri)
 (require 'lean-util)
