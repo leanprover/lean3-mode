@@ -1,9 +1,25 @@
-;; -*- lexical-binding: t; -*-
+;;; company-lean.el --- A company backend for lean-mode -*- lexical-binding: t -*-
+
 ;; Copyright (c) 2014 Microsoft Corporation. All rights reserved.
+
+;; Author: Leonardo de Moura <leonardo@microsoft.com>
+;;         Soonho Kong       <soonhok@cs.cmu.edu>
+;;         Gabriel Ebner     <gebner@gebner.org>
+;;         Sebastian Ullrich <sebasti@nullri.ch>
+;; Maintainer: Sebastian Ullrich <sebasti@nullri.ch>
+;; Created: Jan 09, 2014
+;; Keywords: languages
+;; Package-Requires: ((emacs "24.3") (dash "2.12.0") (dash-functional "1.2.0") (s "1.10.0") (f "0.19.0") (company "0.9.3") (lean-mode "1.0"))
+;; Version: 1.0
+;; URL: https://github.com/leanprover/lean-mode
+
 ;; Released under Apache 2.0 license as described in the file LICENSE.
-;;
-;; Authors: Soonho Kong, Sebastian Ullrich
-;;
+
+
+;;; Commentary:
+
+;; Provides context-sensitive auto completion for lean-mode.
+
 (require 'company)
 (require 'company-etags)
 (require 'dash)
@@ -14,6 +30,12 @@
 (require 'lean-util)
 (require 'lean-server)
 
+(defcustom company-lean-type-foreground (face-foreground 'font-lock-keyword-face)
+  "Color of type parameter in auto-complete candidates"
+  :group 'lean
+  :type 'color)
+
+;;;###autoload
 (defun company-lean-hook ()
   (set (make-local-variable 'company-backends) '(company-lean))
   (setq-local company-tooltip-limit 20)                      ; bigger popup window
@@ -113,11 +135,11 @@
 ;; =======
 
 (defadvice company--window-width
-    (after lean-company--window-width activate)
+    (after company-lean--window-width activate)
   (when (eq major-mode 'lean-mode)
     (setq ad-return-value (truncate (* 0.95 (window-body-width))))))
 
-(defun replace-regex-return-position (regex rep string &optional start)
+(defun company-lean--replace-regex-return-position (regex rep string &optional start)
   "Find regex and replace with rep on string.
 
 Return replaced string and start and end positions of replacement."
@@ -139,7 +161,7 @@ Return replaced string and start and end positions of replacement."
            `(,result ,m-start ,(+ m-start (length replaced-string)))
            ))))
 
-(defun replace-regex-add-properties-all (regex rep string properties)
+(defun company-lean--replace-regex-add-properties-all (regex rep string properties)
   "Find all occurrences of regex in string, and replace them with
 rep. Then, add text-properties on the replaced region."
   (let ((replace-result-items (replace-regex-return-position regex rep string))
@@ -150,15 +172,15 @@ rep. Then, add text-properties on the replaced region."
          (setq result replaced-string)
          (add-text-properties m-start m-end properties result)
          (setq replace-result-items
-               (replace-regex-return-position regex rep result m-end)))))
+               (company-lean--replace-regex-return-position regex rep result m-end)))))
     result))
 
 (eval-after-load 'company
   '(defadvice company-fill-propertize
-     (after lean-company-fill-propertize activate)
+     (after company-lean-fill-propertize activate)
      (when (eq major-mode 'lean-mode)
        (let* ((selected (ad-get-arg 3))
-              (foreground-color lean-company-type-foreground)
+              (foreground-color company-lean-type-foreground)
               (background-color (if selected (face-background 'company-tooltip-selection)
                                   (face-background 'company-tooltip)))
               (face-attrs
@@ -171,7 +193,7 @@ rep. Then, add text-properties on the replaced region."
               (old-len    (length old-return))
               new-return new-len)
          (setq new-return
-               (replace-regex-add-properties-all
+               (company-lean--replace-regex-add-properties-all
                 (rx "?" word-start (group (+ (not white))) word-end)
                 "\\1"
                 ad-return-value
@@ -184,4 +206,7 @@ rep. Then, add text-properties on the replaced region."
            (add-text-properties new-len old-len properties new-return))
          (setq ad-return-value new-return)))))
 
-(provide 'lean-company)
+;;;###autoload
+(add-hook 'lean-mode-hook #'company-lean-hook)
+
+(provide 'company-lean)

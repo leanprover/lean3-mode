@@ -54,16 +54,6 @@
   :group 'lean
   :type '(list string))
 
-(defcustom lean-company-use t
-  "Use company mode for lean."
-  :group 'lean
-  :type 'boolean)
-
-(defcustom lean-company-type-foreground (face-foreground 'font-lock-keyword-face)
-  "Color of type parameter in auto-complete candidates"
-  :group 'lean
-  :type 'color)
-
 (defcustom lean-eldoc-use t
   "Use eldoc mode for lean."
   :group 'lean

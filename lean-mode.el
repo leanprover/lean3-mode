@@ -10,7 +10,7 @@
 ;; Maintainer: Sebastian Ullrich <sebasti@nullri.ch>
 ;; Created: Jan 09, 2014
 ;; Keywords: languages
-;; Package-Requires: ((emacs "24.3") (dash "2.12.0") (dash-functional "1.2.0") (s "1.10.0") (f "0.19.0") (company "0.9.3") (flycheck "30") (unicode-fonts "0.4.8"))
+;; Package-Requires: ((emacs "24.3") (dash "2.12.0") (dash-functional "1.2.0") (s "1.10.0") (f "0.19.0") (flycheck "30"))
 ;; Version: 1.0
 ;; URL: https://github.com/leanprover/lean-mode
 
@@ -37,7 +37,6 @@
 (require 'lean-input)
 (require 'lean-syntax)
 (require 'lean-leanpkg)
-(require 'lean-company)
 (require 'lean-server)
 (require 'lean-flycheck)
 (require 'lean-info)
@@ -101,7 +100,6 @@
   (local-set-key lean-keybinding-server-restart            'lean-server-restart)
   (local-set-key lean-keybinding-find-definition           'lean-find-definition)
   (local-set-key lean-keybinding-tab-indent                'lean-tab-indent)
-  (local-set-key lean-keybinding-auto-complete             'company-complete)
   (local-set-key lean-keybinding-hole                      'lean-hole)
   (local-set-key lean-keybinding-lean-toggle-show-goal     'lean-toggle-show-goal)
   (local-set-key lean-keybinding-lean-toggle-next-error    'lean-toggle-next-error)
@@ -190,9 +188,6 @@ enabled and disabled respectively.")
   ;; info buffers
   (lean-ensure-info-buffer lean-next-error-buffer-name)
   (lean-ensure-info-buffer lean-show-goal-buffer-name)
-  ;; company-mode
-  (when lean-company-use
-    (company-lean-hook))
   ;; eldoc
   (when lean-eldoc-use
     (set (make-local-variable 'eldoc-documentation-function)

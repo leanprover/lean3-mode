@@ -2,17 +2,10 @@ This is the emacs mode for the [Lean theorem prover][lean].
 
 [lean]: https://github.com/leanprover/lean
 
-Quick-start
-===========
+Setup
+=====
 
-If you have built lean from source, all that is necessary is to call the
-`leanemacs_build` script which automatically installs all the dependencies and
-opens up emacs with lean-mode loaded:
-```
-~/projects/lean/bin/leanemacs_build
-```
 
-If you have installed lean from a binary package, you can run `leanemacs`.
 
 Trying It Out
 =============
