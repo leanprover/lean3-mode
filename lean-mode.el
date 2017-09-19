@@ -11,21 +11,18 @@
 ;; Created: Jan 09, 2014
 ;; Keywords: languages
 ;; Package-Requires: ((emacs "24.3") (dash "2.12.0") (dash-functional "1.2.0") (s "1.10.0") (f "0.19.0") (flycheck "30"))
-;; Version: 1.0
 ;; URL: https://github.com/leanprover/lean-mode
 
 ;; Released under Apache 2.0 license as described in the file LICENSE.
-
 
 ;;; Commentary:
 
 ;; Provides a major mode for the Lean programming language.
 
 ;; Provides highlighting, diagnostics, goal visualization,
-;; auto-complete, and many other useful features for Lean users.
+;; and many other useful features for Lean users.
 
-;; Diagnostics and auto complete are availble when in the major
-;; mode, see the README.md for more advanced features and the
+;; See the README.md for more advanced features and the
 ;; associated keybindings.
 
 (require 'cl-lib)
