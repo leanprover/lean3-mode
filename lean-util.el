@@ -10,12 +10,19 @@
 (require 'dash)
 (require 'dash-functional)
 
+(defun lean-setup-rootdir ()
+  (let ((root (executable-find lean-executable-name)))
+    (when root
+      (setq lean-rootdir (f-dirname (f-dirname root))))
+    root))
+
 (defun lean-get-rootdir ()
   (or
    lean-rootdir
+   (lean-setup-rootdir)
    (error
-    (concat "'lean-rootdir' is not defined."
-            "Please have (customize-set-variable 'lean-rootdir \"~/work/lean\") "
+    (concat "Lean was not found in the 'exec-path' and 'lean-rootdir' is not defined. "
+            "Please have (customize-set-variable 'lean-rootdir \"~/path/to/lean\") "
             "in your emacs configuration. "
             "Also make sure that your (custom-set-variable ...) "
             " comes before (require 'lean-mode)"))))
