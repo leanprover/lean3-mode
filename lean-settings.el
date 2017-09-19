@@ -133,13 +133,13 @@ false (nil)."
   "Lean Keybinding for lean-message-boxes-toggle"
   :group 'lean-keybinding :type 'key-sequence)
 (defcustom lean-keybinding-leanpkg-configure (kbd "C-c C-p C-c")
-  "Lean Keybinding for lean-pkg-configure"
+  "Lean Keybinding for lean-leanpkg-configure"
   :group 'lean-keybinding :type 'key-sequence)
 (defcustom lean-keybinding-leanpkg-build (kbd "C-c C-p C-b")
-  "Lean Keybinding for lean-pkg-build"
+  "Lean Keybinding for lean-leanpkg-build"
   :group 'lean-keybinding :type 'key-sequence)
 (defcustom lean-keybinding-leanpkg-test (kbd "C-c C-p C-t")
-  "Lean Keybinding for lean-pkg-test"
+  "Lean Keybinding for lean-leanpkg-test"
   :group 'lean-keybinding :type 'key-sequence)
 (defcustom lean-keybinding-lean-helm-definitions (kbd "C-c C-d")
   "Lean Keybinding for lean-helm-definitions"

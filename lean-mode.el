@@ -37,7 +37,7 @@
 (require 'lean-settings)
 (require 'lean-input)
 (require 'lean-syntax)
-(require 'lean-pkg)
+(require 'lean-leanpkg)
 (require 'lean-company)
 (require 'lean-server)
 (require 'lean-flycheck)

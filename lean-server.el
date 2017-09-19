@@ -8,7 +8,7 @@
 
 (require 'json)
 (require 'lean-debug)
-(require 'lean-pkg)
+(require 'lean-leanpkg)
 (require 'dash)
 
 (defcustom lean-server-show-message-hook '(lean-message-boxes-display)
@@ -348,7 +348,7 @@ least the following keys:
 (defun lean-server-ensure-alive ()
   "Ensures that the current buffer has a lean server"
   (when (not (lean-server-session-alive-p lean-server-session))
-    (setq lean-server-session (lean-server-session-get (leanpkg-find-path-file)))
+    (setq lean-server-session (lean-server-session-get (lean-leanpkg-find-path-file)))
     (lean-server-show-tasks)
     (lean-server-show-messages)
     (lean-server-sync)))
