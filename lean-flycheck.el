@@ -5,6 +5,7 @@
 ;;
 ;; Author: Soonho Kong
 ;;
+(require 'cl-lib)
 (require 'flycheck)
 (require 'lean-settings)
 (require 'lean-server)
@@ -37,8 +38,8 @@
       (let* ((cur-fn (buffer-file-name))
              (tasks (lean-server-session-tasks sess))
              (cur-task (plist-get tasks :cur_task))
-             (tasks-for-cur-file (remove-if-not (lambda (task) (equal cur-fn (plist-get task :file_name)))
-                                                (plist-get tasks :tasks)))
+             (tasks-for-cur-file (cl-remove-if-not (lambda (task) (equal cur-fn (plist-get task :file_name)))
+                                                   (plist-get tasks :tasks)))
              (display-tasks))
         ;; do not display tasks for current file when highlighting is enabled
         (when (not lean-server-show-pending-tasks)
@@ -69,8 +70,8 @@
                  (append
                   (lean-flycheck-mk-task-msgs checker buffer lean-server-session)
                   (mapcar (lambda (msg) (apply #'lean-flycheck-parse-error checker buffer msg))
-                          (remove-if-not (lambda (msg) (equal cur-fn (plist-get msg :file_name)))
-                                         (lean-server-session-messages lean-server-session))))))))
+                          (cl-remove-if-not (lambda (msg) (equal cur-fn (plist-get msg :file_name)))
+                                            (lean-server-session-messages lean-server-session))))))))
 
 (defun lean-flycheck-init ()
   "Initialize lean-flychek checker"
@@ -82,36 +83,6 @@
 
 (defun lean-flycheck-turn-on ()
   (flycheck-mode t))
-
-(defun lean-flycheck-error-list-buffer-width ()
-  "Return the width of flycheck-error list buffer"
-  (interactive)
-  (let* ((flycheck-error-window (get-buffer-window "*Flycheck errors*" t))
-         (window                (selected-window))
-         (body-width            (window-body-width window)))
-    (cond
-     ;; If "*Flycheck errors" buffer is available, use its width
-     (flycheck-error-window
-      (window-body-width flycheck-error-window))
-     ;; Can we split vertically?
-     ((window-splittable-p window nil)
-      body-width)
-     ;; Can we split horizontally?
-     ((window-splittable-p window t)
-      (/ body-width 2))
-     ;; In worst case, just use the same width of current window
-     (t body-width))))
-
-(defun lean-flycheck-error-list-message-width ()
-  "Return the width of error messages in the flycheck-error list buffer"
-  (let (;; assume 'Message' is last column and has size 0 (true for default config)
-        (other-columns-width (apply '+ (mapcar (apply-partially 'nth 1) flycheck-error-list-format)))
-        (margin (length flycheck-error-list-format)))
-    (cond
-     ;; If lean-flycheck-msg-width is set, use it
-     (lean-flycheck-msg-width
-      lean-flycheck-msg-width)
-     (t (- (lean-flycheck-error-list-buffer-width) other-columns-width margin)))))
 
 (defconst lean-next-error-buffer-name "*Lean Next Error*")
 

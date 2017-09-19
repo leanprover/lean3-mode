@@ -46,7 +46,7 @@
   (company-mode t))
 
 (cl-defun company-lean--make-candidate (prefix &key text type (tactic_params 'empty) doc source &allow-other-keys)
-  (destructuring-bind (&key file line column) source
+  (destructuring-bind (&key file line _column) source
     (let ((source (cond
                    (file (cons file line))
                    (line (cons (current-buffer) (lean-pos-at-line-col line 0))))))
@@ -144,7 +144,6 @@
 
 Return replaced string and start and end positions of replacement."
   (let* ((start   (or start 0))
-         (len     (length string))
          (m-start (string-match regex string start))
          (m-end   (match-end 0))
          pre-string post-string matched-string replaced-string result)
@@ -164,7 +163,7 @@ Return replaced string and start and end positions of replacement."
 (defun company-lean--replace-regex-add-properties-all (regex rep string properties)
   "Find all occurrences of regex in string, and replace them with
 rep. Then, add text-properties on the replaced region."
-  (let ((replace-result-items (replace-regex-return-position regex rep string))
+  (let ((replace-result-items (company-lean--replace-regex-return-position regex rep string))
         (result string))
     (while replace-result-items
       (pcase replace-result-items

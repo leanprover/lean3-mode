@@ -7,6 +7,7 @@
 ;;
 ;;; Code:
 
+(require 'cl-lib)
 (require 's)
 (require 'lean-server)
 
@@ -30,10 +31,10 @@
   "Get the current messages out of the Lean server session."
   (let ((buf (current-buffer)))
     (if lean-server-session
-        (remove-if-not (lambda (msg)
-                         (equal (buffer-file-name buf)
-                                (plist-get msg :file_name)))
-                       (lean-server-session-messages lean-server-session))
+        (cl-remove-if-not (lambda (msg)
+                            (equal (buffer-file-name buf)
+                                   (plist-get msg :file_name)))
+                          (lean-server-session-messages lean-server-session))
       '())))
 
 (defun lean-message-boxes--set-enabledp (enabledp)
@@ -49,12 +50,12 @@
 (defun lean-message-boxes-enable ()
   "Enable the display of message boxes."
   (interactive)
-  (setq lean-message-boxes--set-enabledp t))
+  (lean-message-boxes--set-enabledp t))
 
 (defun lean-message-boxes-disable ()
   "Disable the display of message boxes."
   (interactive)
-  (setq lean-message-boxes--set-enabledp t))
+  (lean-message-boxes--set-enabledp nil))
 
 (defvar lean-message-boxes--overlays '()
   "The overlays in the current buffer from Lean messages.")
@@ -87,8 +88,7 @@
 
 (defun lean-message-boxes--as-string (caption str)
   "Construct a propertized string representing CAPTION and STR."
-  (let* ((caption-copy (concat caption))
-         (str-copy (s-trim str)))
+  (let* ((str-copy (s-trim str)))
     (put-text-property 0 (length str-copy)
                        'face 'lean-message-boxes-content-face
                        str-copy)

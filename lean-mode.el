@@ -29,6 +29,7 @@
 ;; associated keybindings.
 
 (require 'cl-lib)
+(require 'dash)
 (require 'pcase)
 (require 'flycheck)
 (require 'lean-eri)

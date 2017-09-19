@@ -6,6 +6,9 @@
 ;; Author: Sebastian Ullrich
 ;;
 
+(require 'f)
+(require 'lean-util)
+
 (defun lean-diff-test-file ()
   "Use interactive ./test_input.sh on file of current buffer"
   (interactive)

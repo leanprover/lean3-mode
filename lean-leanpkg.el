@@ -45,7 +45,7 @@
              (proc (start-process "leanpkg" (current-buffer)
                                   (lean-leanpkg-executable) cmd)))
         (set-process-sentinel
-         proc (lambda (p e)
+         proc (lambda (_p _e)
                 (setq lean-leanpkg-running nil)
                 (when restart-lean-server
                   (with-current-buffer out-buf

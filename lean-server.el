@@ -6,6 +6,7 @@
 ;; Author: Gabriel Ebner
 ;;
 
+(require 'cl-lib)
 (require 'json)
 (require 'lean-debug)
 (require 'lean-leanpkg)
@@ -93,7 +94,7 @@ least the following keys:
       (insert string)
       (lean-server-process-buffer sess))))
 
-(defun lean-server-handle-signal (process event)
+(defun lean-server-handle-signal (_process event)
   "Handle signals for lean-server-process"
   (force-mode-line-update)
   (let ((event-string (s-trim event)))
@@ -116,7 +117,7 @@ least the following keys:
                 ,(format "-T%i" lean-timeout-limit)
                 ,@lean-extra-arguments
                 ,(format "*%s*" path-file)))
-         (proc (if (fboundp 'make-process)
+         (proc (if (and (fboundp 'make-process) (fboundp 'make-pipe-process))
                    (make-process ;; emacs >= 25 lets us redirect stderr
                     :name "lean-server"
                     :buffer (format " *lean-server (%s)*" path-file)
@@ -142,7 +143,7 @@ least the following keys:
                 :current-roi 'not-yet-sent
                 :callbacks nil
                 :messages nil)))
-    (set-process-filter proc (lambda (proc string) (lean-server-filter sess string)))
+    (set-process-filter proc (lambda (_proc string) (lean-server-filter sess string)))
     (set-process-coding-system proc 'utf-8 'utf-8)
     (set-process-query-on-exit-flag proc nil)
     sess))
@@ -189,10 +190,10 @@ least the following keys:
 
 (defun lean-server-session-get (path-file)
   (setq lean-server-sessions
-        (remove-if-not #'lean-server-session-alive-p
-                       lean-server-sessions))
-  (or (find path-file lean-server-sessions
-            :test (lambda (d s) (equal d (lean-server-session-path-file s))))
+        (cl-remove-if-not #'lean-server-session-alive-p
+                          lean-server-sessions))
+  (or (cl-find path-file lean-server-sessions
+               :test (lambda (d s) (equal d (lean-server-session-path-file s))))
       (let ((sess (lean-server-session-create path-file)))
         (setq lean-server-sessions (cons sess lean-server-sessions))
         sess)))
@@ -300,10 +301,10 @@ least the following keys:
                              (current-buffer))))))
     (when lean-server-session
       (let ((relevant-msgs
-             (remove-if-not (lambda (msg)
-                              (equal (buffer-file-name buf)
-                                     (plist-get msg :file_name)))
-                            (lean-server-session-messages lean-server-session))))
+             (cl-remove-if-not (lambda (msg)
+                                 (equal (buffer-file-name buf)
+                                        (plist-get msg :file_name)))
+                               (lean-server-session-messages lean-server-session))))
         (dolist (hook lean-server-show-message-hook)
           (funcall hook relevant-msgs))))))
 
@@ -397,7 +398,7 @@ least the following keys:
 
 (defvar-local lean-server-sync-timer nil)
 
-(defun lean-server-change-hook (begin end len)
+(defun lean-server-change-hook (_begin _end _len)
   (save-match-data
     (when lean-server-sync-timer (cancel-timer lean-server-sync-timer))
     (setq lean-server-sync-timer
@@ -448,7 +449,7 @@ least the following keys:
         (lean-server-session-send-roi lean-server-session
                                       (lean-server-roi-extend new-roi 5))))))
 
-(defun lean-server-window-scroll-function-hook (wnd new-start-pos)
+(defun lean-server-window-scroll-function-hook (wnd _new-start-pos)
   (let ((buf (window-buffer wnd)))
     (with-demoted-errors "lean scroll hook: %s"
       (with-current-buffer buf
