@@ -207,3 +207,4 @@ rep. Then, add text-properties on the replaced region."
 (add-hook 'lean-mode-hook #'company-lean-hook)
 
 (provide 'company-lean)
+;;; company-lean.el ends here
