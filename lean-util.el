@@ -22,10 +22,7 @@
    (lean-setup-rootdir)
    (error
     (concat "Lean was not found in the 'exec-path' and 'lean-rootdir' is not defined. "
-            "Please have (customize-set-variable 'lean-rootdir \"~/path/to/lean\") "
-            "in your emacs configuration. "
-            "Also make sure that your (custom-set-variable ...) "
-            " comes before (require 'lean-mode)"))))
+            "Please set it via M-x customize-variable RET lean-rootdir RET."))))
 
 (defun lean-get-executable (exe-name)
   "Return fullpath of lean executable"
