@@ -44,7 +44,7 @@
   (company-mode t))
 
 (cl-defun company-lean--make-candidate (prefix &key text type (tactic_params 'empty) doc source &allow-other-keys)
-  (destructuring-bind (&key file line _column) source
+  (cl-destructuring-bind (&key file line _column) source
     (let ((source (cond
                    (file (cons file line))
                    (line (cons (current-buffer) (lean-pos-at-line-col line 0))))))
