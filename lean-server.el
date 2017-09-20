@@ -367,6 +367,13 @@ least the following keys:
   (lean-server-ensure-alive)
   (lean-server-session-send-command lean-server-session cmd params cb error-cb))
 
+(defvar lean-async-timeout 2
+  "Maximum wait time for a value to be set during asynchronous call.")
+
+(defvar lean-async-wait 0.03
+  "Pause between checks to see if the value's been set when turning an
+asynchronous call into synchronous.")
+
 (defun lean-server-send-synchronous-command (cmd params)
   "Sends a command to the lean server for the current buffer, waiting for and returning the response"
   ;; inspired by company--force-sync
@@ -380,9 +387,9 @@ least the following keys:
                                  (setq ok nil)
                                  (setq res message))))
     (while (eq res 'trash)
-      (if (> (- (time-to-seconds) start) company-async-timeout)
+      (if (> (- (time-to-seconds) start) lean-async-timeout)
           (error "Lean server timed out")
-        (sleep-for company-async-wait)))
+        (sleep-for lean-async-wait)))
     (if ok
         res
       (error res))))
