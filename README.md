@@ -2,10 +2,25 @@ This is the emacs mode for the [Lean theorem prover][lean].
 
 [lean]: https://github.com/leanprover/lean
 
-Setup
-=====
+Installation
+============
 
+`lean-mode` requires GNU Emacs 24. The recommended way to install it is via [MELPA](https://melpa.org). If you have not already configured MELPA, put the following code in your Emacs init file (typically `~/.emacs.d/init.el`):
+```elisp
+(require 'package) ; You might already have this line
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(package-initialize) ; You might already have this line
+```
+See also [MELPA: Getting Started](https://melpa.org/#/getting-started).
 
+With MELPA configured, you can `M-x package-install` the packages `lean-mode`, `company-lean`, and `helm-lean`. The latter two packages give you auto completion and a searchable list of declarations, respectively, and are strongly recommended.
+
+For `company-lean`, you should also bind a key to trigger completion, if you have not already done so:
+
+```elisp
+;; Trigger completion on Shift-Space
+(global-set-key (kbd "S-SPC") #'company-complete)
+```
 
 Trying It Out
 =============
@@ -25,10 +40,10 @@ Key Bindings and Commands
 | Key                | Function                                                                        |
 |--------------------|---------------------------------------------------------------------------------|
 | <kbd>M-.</kbd>     | jump to definition in source file (`lean-find-definition`)                      |
-| <kbd>S-SPC</kbd>   | auto complete identifiers, options, imports, etc. (`company-complete`)          |
 | <kbd>C-c C-k</kbd> | shows the keystroke needed to input the symbol under the cursor                 |
 | <kbd>C-c C-x</kbd> | execute lean in stand-alone mode (`lean-std-exe`)                               |
-| <kbd>C-c SPC</kbd> | run a command on the hole at point (`lean-hole`)
+| <kbd>C-c SPC</kbd> | run a command on the hole at point (`lean-hole`)                                |
+| <kbd>C-c C-d</kbd> | show a searchable list of definitions (`helm-lean-definitions`)                 |
 | <kbd>C-c C-g</kbd> | toggle showing current tactic proof goal (`lean-toggle-show-goal`)              |
 | <kbd>C-c C-n</kbd> | toggle showing next error in dedicated buffer (`lean-toggle-next-error`)        |
 | <kbd>C-c C-b</kbd> | toggle showing output in inline boxes (`lean-message-boxes-toggle`)             |
@@ -51,58 +66,6 @@ If you then type
 a box appears after the line showing the type of `id`. Customize `lean-message-boxes-enabled-captions` to choose categories of boxes.
 In particular, add `"trace output"` to the list to see proof states and other traces in the buffer.
 
-Requirements
-============
-
-``lean-mode`` requires [Emacs 24][emacs24] or later and the following
-packages, which can be installed via <kbd>M-x package-install</kbd>:
-[dash][dash], [dash-functional][dash], [f][f], [s][s], [company][company],
-and [flycheck][flycheck]
-
-[emacs24]: http://www.gnu.org/software/emacs
-[dash]: https://github.com/magnars/dash.el
-[f]: https://github.com/rejeep/f.el
-[s]: https://github.com/magnars/s.el
-[company]: http://company-mode.github.io/
-[flycheck]: http://www.flycheck.org/manual/latest/index.html
-
-Installation
-============
-
-You can also include lean-mode permanently in your emacs init file.  In this
-case, just put the following code in your Emacs init file (typically `~/.emacs.d/init.el`):
-```elisp
-;; You need to modify the following two lines:
-(setq lean-rootdir "~/projects/lean")
-(setq lean-emacs-path "~/projects/lean/src/emacs")
-
-(setq lean-mode-required-packages '(company dash dash-functional f
-                               flycheck let-alist s seq))
-
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(package-initialize)
-(let ((need-to-refresh t))
-  (dolist (p lean-mode-required-packages)
-    (when (not (package-installed-p p))
-      (when need-to-refresh
-        (package-refresh-contents)
-        (setq need-to-refresh nil))
-      (package-install p))))
-
-(setq load-path (cons lean-emacs-path load-path))
-
-(require 'lean-mode)
-```
-
-If you already have the dependencies installed, the following three lines suffice:
-```elisp
-;; You need to modify the following two lines:
-(setq lean-rootdir "~/projects/lean")
-(setq load-path (cons "~/projects/lean/src/emacs" load-path))
-(require 'lean-mode)
-```
-
 Known Issues and Possible Solutions
 ===================================
 
@@ -124,35 +87,14 @@ Then, have the following lines in your emacs setup to use `DejaVu Sans Mono` fon
   (set-face-attribute 'default nil :font "DejaVu Sans Mono-11"))
 ```
 
-You may also need to install [emacs-unicode-fonts](https://github.com/rolandwalker/unicode-fonts) package.
+You may also need to install the [emacs-unicode-fonts](https://github.com/rolandwalker/unicode-fonts) package, after which you should add the following lines to your emacs setup:
 
- - Run `M-x package-refresh-contents`, `M-x package-install`, and type `unicode-fonts`.
- - Add the following lines in your emacs setup:
-
-```lisp
+```elisp
 (require 'unicode-fonts)
 (unicode-fonts-setup)
 ```
-
-"Variable binding depth exceeds max-specpdl-size" Error
----------------------------------------------------------
-
-See [Issue 906](https://github.com/leanprover/lean/issues/906) for details.
-[Moritz Kiefer](https://github.com/cocreature) reported that `proofgeneral`
-comes with an old version of `mmm-mode` (0.4.8, released in 2004) on ArchLinux
-and it caused this problem. Either removing `proofgeneral` or upgrading
-`mmm-mode` to the latest version (0.5.1 as of 2015 Dec) resolves this issue.
 
 Contributions
 =============
 
 Contributions are welcome!
-
-Install [Cask](https://github.com/cask/cask) if you haven't already, then:
-
-    $ cd /path/to/lean/src/emacs
-    $ cask
-
-Run all tests with:
-
-    $ make
