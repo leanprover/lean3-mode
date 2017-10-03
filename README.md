@@ -1,11 +1,11 @@
-This is the emacs mode for the [Lean theorem prover][lean].
+This is the Emacs mode for the [Lean theorem prover][lean].
 
 [lean]: https://github.com/leanprover/lean
 
 Installation
 ============
 
-`lean-mode` requires GNU Emacs 24. The recommended way to install it is via [MELPA](https://melpa.org). If you have not already configured MELPA, put the following code in your Emacs init file (typically `~/.emacs.d/init.el`):
+`lean-mode` requires GNU Emacs 24.3. The recommended way to install it is via [MELPA](https://melpa.org). If you have not already configured MELPA, put the following code in your Emacs init file (typically `~/.emacs.d/init.el`):
 ```elisp
 (require 'package) ; You might already have this line
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
