@@ -5,7 +5,7 @@ This is the Emacs mode for the [Lean theorem prover][lean].
 Installation
 ============
 
-`lean-mode` requires GNU Emacs 24.3. The recommended way to install it is via [MELPA](https://melpa.org). If you have not already configured MELPA, put the following code in your Emacs init file (typically `~/.emacs.d/init.el`):
+`lean-mode` requires GNU Emacs 24.3 or newer. The recommended way to install it is via [MELPA](https://melpa.org). If you have not already configured MELPA, put the following code in your Emacs init file (typically `~/.emacs.d/init.el`):
 ```elisp
 (require 'package) ; You might already have this line
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
@@ -13,7 +13,7 @@ Installation
 ```
 See also [MELPA: Getting Started](https://melpa.org/#/getting-started).
 
-With MELPA configured, you can `M-x package-install` the packages `lean-mode`, `company-lean`, and `helm-lean`. The latter two packages give you auto completion and a searchable list of declarations, respectively, and are strongly recommended.
+With MELPA configured, you can `M-x package-install` the packages `lean-mode` and `company-lean`. The latter package gives you auto completion and is strongly recommended. There is a third package, `helm-lean`, which provides a searchable list of declarations on `C-c C-d` using the Helm interface. `helm-lean` requires Emacs 24.4 or newer.
 
 For `company-lean`, you should also bind a key to trigger completion, if you have not already done so:
 
@@ -21,6 +21,11 @@ For `company-lean`, you should also bind a key to trigger completion, if you hav
 ;; Trigger completion on Shift-Space
 (global-set-key (kbd "S-SPC") #'company-complete)
 ```
+
+Updating
+--------
+
+For updating the Lean MELPA packages, use `package-list-packages`. See the section "Updating Packages" on [MELPA: Getting Started](https://melpa.org/#/getting-started) for details.
 
 Trying It Out
 =============
@@ -98,3 +103,16 @@ Contributions
 =============
 
 Contributions are welcome!
+
+Building from Source
+--------------------
+
+When working on `lean-mode` itself, it is much easier to just `require` the sources than repeatedly building the MELPA packages:
+
+```elisp
+(add-to-load-path "~/path/to/lean-mode/")
+(require 'company-lean)
+(require 'helm-lean)
+```
+
+Make sure you have the packages' dependencies listed on MELPA installed -- the easiest way to do this may be to just install the official Lean MELPA packages and making sure the `require` commands above are execute before `package-initialize`.
