@@ -62,4 +62,6 @@
 
 ;;;###autoload
 (add-hook 'lean-mode-hook #'helm-lean-hook)
+
+(provide 'helm-lean)
 ;;; helm-lean.el ends here
