@@ -25,6 +25,8 @@
 ;; See the README.md for more advanced features and the
 ;; associated keybindings.
 
+;;; Code:
+
 (require 'cl-lib)
 (require 'dash)
 (require 'pcase)
@@ -43,8 +45,6 @@
 (require 'lean-message-boxes)
 (require 'lean-right-click)
 (require 'lean-dev)
-
-;;; Code:
 
 (defun lean-compile-string (exe-name args file-name)
   "Concatenate EXE-NAME, ARGS, and FILE-NAME."

@@ -18,6 +18,8 @@
 
 ;; Currently provides an interface for looking up Lean definitions by name
 
+;;; Code:
+
 (require 'dash)
 (require 'helm)
 (require 'lean-server)

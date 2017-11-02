@@ -18,6 +18,8 @@
 
 ;; Provides context-sensitive auto completion for lean-mode.
 
+;;; Code:
+
 (require 'company)
 (require 'company-etags)
 (require 'dash)
