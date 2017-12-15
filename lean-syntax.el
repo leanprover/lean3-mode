@@ -11,7 +11,7 @@
   '("import" "prelude" "protected" "private" "noncomputable" "definition" "meta" "renaming"
     "hiding" "exposing" "parameter" "parameters" "begin" "constant" "constants"
     "lemma" "variable" "variables" "theorem" "example"
-    "open" "export" "axiom" "axioms" "inductive" "coinductive" "with" "without" "out"
+    "open" "export" "axiom" "axioms" "inductive" "coinductive" "with" "without"
     "structure" "universe" "universes" "hide"
     "precedence" "reserve" "declare_trace" "add_key_equivalence"
     "match" "infix" "infixl" "infixr" "notation" "postfix" "prefix" "instance"
