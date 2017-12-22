@@ -16,11 +16,13 @@
   "Face for Lean message box contents."
   :group 'lean)
 
-(defcustom lean-message-boxes-enabled-captions '("check result" "print result")
+(defcustom lean-message-boxes-enabled-captions '("check result" "eval result" "print result" "reduce result")
   "Which captions should result in boxes?"
   :group 'lean
   :type '(repeat (choice (const "check result")
+                         (const "eval result")
                          (const "print result")
+                         (const "reduce result")
                          (const "trace output"))))
 
 (defvar lean-message-boxes-enabledp nil
