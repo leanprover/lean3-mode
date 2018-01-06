@@ -10,7 +10,7 @@
 (defconst lean-keywords1
   '("import" "prelude" "protected" "private" "noncomputable" "definition" "meta" "renaming"
     "hiding" "exposing" "parameter" "parameters" "begin" "constant" "constants"
-    "lemma" "variable" "variables" "theorem" "example"
+    "lemma" "variable" "variables" "theorem" "example" "abbreviation"
     "open" "export" "axiom" "axioms" "inductive" "coinductive" "with" "without"
     "structure" "universe" "universes" "hide"
     "precedence" "reserve" "declare_trace" "add_key_equivalence"
