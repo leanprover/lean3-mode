@@ -53,7 +53,9 @@
                   (with-current-buffer out-buf
                     (insert "; restarting lean server\n"))
                   (with-current-buffer orig-buf
-                    (lean-server-restart)))))))))
+                    (lean-server-restart)))
+                (with-current-buffer out-buf
+                  (insert "; done"))))))))
 
 (defun lean-leanpkg-configure ()
   "Call leanpkg configure"
