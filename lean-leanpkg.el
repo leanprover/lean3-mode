@@ -44,6 +44,8 @@
              (out-buf (current-buffer))
              (proc (start-process "leanpkg" (current-buffer)
                                   (lean-leanpkg-executable) cmd)))
+        (comint-mode)
+        (set-process-filter proc #'comint-output-filter)
         (set-process-sentinel
          proc (lambda (_p _e)
                 (setq lean-leanpkg-running nil)
