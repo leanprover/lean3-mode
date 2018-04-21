@@ -17,12 +17,16 @@
     root))
 
 (defun lean-get-rootdir ()
-  (or
-   lean-rootdir
-   (lean-setup-rootdir)
-   (error
-    (concat "Lean was not found in the 'exec-path' and 'lean-rootdir' is not defined. "
-            "Please set it via M-x customize-variable RET lean-rootdir RET."))))
+  (if lean-rootdir
+      (let ((lean-path (f-full (f-join lean-rootdir "bin" lean-executable-name))))
+        (unless (f-exists? lean-path)
+          (error "Incorrect 'lean-rootdir' value, path '%s' does not exist." lean-path))
+        lean-rootdir)
+    (or
+     (lean-setup-rootdir)
+     (error
+      (concat "Lean was not found in the 'exec-path' and 'lean-rootdir' is not defined. "
+              "Please set it via M-x customize-variable RET lean-rootdir RET.")))))
 
 (defun lean-get-executable (exe-name)
   "Return fullpath of lean executable"
