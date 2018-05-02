@@ -107,11 +107,19 @@ least the following keys:
 (defun lean-server-session-create (path-file)
   "Creates a new server session"
   (let* ((default-directory (f--traverse-upwards (f-dir? it) path-file))
+         (exe (lean-get-executable lean-executable-name))
+         (exe (if (assoc path-file lean-server-overrides)
+                  (if (f-file? (lean-get-executable "elan"))
+                      (list (lean-get-executable "elan") "run" "--install" (cdr (assoc path-file lean-server-overrides)) lean-executable-name)
+                    (progn
+                      (warn "Lean version override set but `elan` was not found; ignoring")
+                      (list exe)))
+                (list exe)))
          ; Setting process-connection-type is necessary, otherwise
          ; emacs truncates lines with >4096 bytes:
          ; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=24531
          (process-connection-type nil)
-         (cmd `(,(lean-get-executable lean-executable-name)
+         (cmd `(,@exe
                 "--server"
                 ,(format "-M%i" lean-memory-limit)
                 ,(format "-T%i" lean-timeout-limit)
@@ -198,8 +206,8 @@ least the following keys:
         (setq lean-server-sessions (cons sess lean-server-sessions))
         sess)))
 
-(defvar-local lean-server-session nil
-  "Lean server session for the current buffer")
+(defvar lean-server-overrides nil
+  "alist of (path file . toolchain name) pairs defined by `lean-server-switch-version'.")
 
 (defun lean-server-session-running-p (sess)
   (and sess (plist-get (lean-server-session-tasks sess) :is_running)))
@@ -361,6 +369,25 @@ least the following keys:
   (lean-server-ensure-alive)
   (flycheck-stop)
   (flycheck-buffer))
+
+(defun lean-server-versions ()
+  (unless (f-file? (lean-get-executable "elan"))
+    (error "`bin/elan` was not found in the Lean root dir \"%s\"" (lean-get-rootdir)))
+  (with-temp-buffer
+    (call-process (lean-get-executable "elan") nil t nil "toolchain" "list")
+    (let ((results (split-string (buffer-string) "\n" t)))
+      ; strip " (default)" from versions
+      (--map (car (split-string it " ")) results))))
+
+(defun lean-server-switch-version ()
+  "Restarts the lean server for the current buffer, using a specific version from elan prompted by `completing-read'."
+  (interactive)
+  (setq lean-server-overrides
+        (cons
+         (cons (lean-leanpkg-find-path-file)
+               (completing-read "version: " (lean-server-versions) nil 'confirm))
+         lean-server-overrides))
+  (lean-server-restart))
 
 (defun lean-server-send-command (cmd params &optional cb error-cb)
   "Sends a command to the lean server for the current buffer, with a callback to be called upon completion"

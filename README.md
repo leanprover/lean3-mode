@@ -53,6 +53,7 @@ Key Bindings and Commands
 | <kbd>C-c C-n</kbd> | toggle showing next error in dedicated buffer (`lean-toggle-next-error`)        |
 | <kbd>C-c C-b</kbd> | toggle showing output in inline boxes (`lean-message-boxes-toggle`)             |
 | <kbd>C-c C-r</kbd> | restart the lean server (`lean-server-restart`)                                 |
+| <kbd>C-c C-s</kbd> | switch to a different Lean version via [elan](https://github.com/Kha/elan) (`lean-server-switch-version`) |
 | <kbd>C-c ! n</kbd> | flycheck: go to next error                                                      |
 | <kbd>C-c ! p</kbd> | flycheck: go to previous error                                                  |
 | <kbd>C-c ! l</kbd> | flycheck: show list of errors                                                   |

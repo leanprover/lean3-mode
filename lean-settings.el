@@ -101,6 +101,9 @@ false (nil)."
 (defcustom lean-keybinding-server-restart (kbd "C-c C-r")
   "Lean Keybinding for server-restart"
   :group 'lean-keybinding  :type 'key-sequence)
+(defcustom lean-keybinding-server-switch-version (kbd "C-c C-s")
+  "Lean Keybinding for lean-server-switch-version"
+  :group 'lean-keybinding :type 'key-sequence)
 (defcustom lean-keybinding-find-definition (kbd "M-.")
   "Lean Keybinding for find-definition"
   :group 'lean-keybinding  :type 'key-sequence)

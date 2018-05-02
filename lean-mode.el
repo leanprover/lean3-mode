@@ -96,6 +96,7 @@
   (local-set-key lean-keybinding-std-exe2                  #'lean-std-exe)
   (local-set-key lean-keybinding-show-key                  #'quail-show-key)
   (local-set-key lean-keybinding-server-restart            #'lean-server-restart)
+  (local-set-key lean-keybinding-server-switch-version     #'lean-server-switch-version)
   (local-set-key lean-keybinding-find-definition           #'lean-find-definition)
   (local-set-key lean-keybinding-tab-indent                #'lean-tab-indent)
   (local-set-key lean-keybinding-hole                      #'lean-hole)
