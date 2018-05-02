@@ -206,6 +206,9 @@ least the following keys:
         (setq lean-server-sessions (cons sess lean-server-sessions))
         sess)))
 
+(defvar-local lean-server-session nil
+  "Lean server session for the current buffer")
+
 (defvar lean-server-overrides nil
   "alist of (path file . toolchain name) pairs defined by `lean-server-switch-version'.")
 
