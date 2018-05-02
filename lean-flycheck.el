@@ -51,6 +51,14 @@
         (mapcar (lambda (task) (apply #'lean-flycheck-parse-task checker buffer cur-fn task))
                 display-tasks))))
 
+(defun lean-info-fontify-string (str)
+  (lean-ensure-info-buffer "*lean-fontify*")
+  (with-current-buffer "*lean-fontify*"
+    (erase-buffer)
+    (insert str)
+    (font-lock-fontify-region (point-min) (point-max) nil)
+    (buffer-string)))
+
 (cl-defun lean-flycheck-parse-error (checker buffer &key pos_line pos_col severity text file_name &allow-other-keys)
   (flycheck-error-new-at pos_line (1+ pos_col)
                          (pcase severity
@@ -58,7 +66,7 @@
                            ("warning" 'warning)
                            ("information" 'info)
                            (_ 'info))
-                         text
+                         (lean-info-fontify-string text)
                          :filename file_name
                          :checker checker :buffer buffer))
 
