@@ -20,13 +20,9 @@
 
 (defvar-local lean-default-executable-name
   (cl-case system-type
-    ('gnu          "lean")
-    ('gnu/linux    "lean")
-    ('gnu/kfreebsd "lean")
-    ('darwin       "lean")
-    ('ms-dos       "lean")
     ('windows-nt   "lean.exe")
-    ('cygwin       "lean.exe"))
+    ('cygwin       "lean.exe")
+    (t             "lean"))
   "Default executable name of Lean")
 
 (defcustom lean-rootdir nil
