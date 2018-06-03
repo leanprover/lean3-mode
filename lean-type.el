@@ -86,16 +86,20 @@
 
 (defconst lean-show-goal-buffer-name "*Lean Goal*")
 
+(setq lean-show-goal--handler-mask nil)
+
 (defun lean-show-goal--handler ()
-  (let ((deactivate-mark)) ; keep transient mark
-    (when (and (not (eq lean-server-check-mode 'nothing))
-               ; TODO(gabriel): revisit ^^ once info no longer reparses the file
-               (lean-info-buffer-active lean-show-goal-buffer-name))
-      (lean-get-info-record-at-point
-       (lambda (info-record)
-         (let ((state (plist-get info-record :state)))
-           (unless (or (s-blank? state) (s-blank? (s-trim state)))
-             (lean-with-info-output-to-buffer lean-show-goal-buffer-name (princ state)))))))))
+  (if lean-show-goal--handler-mask
+      (setq lean-show-goal--handler-mask nil)
+    (let ((deactivate-mark)) ; keep transient mark
+      (when (and (not (eq lean-server-check-mode 'nothing))
+					; TODO(gabriel): revisit ^^ once info no longer reparses the file
+		 (lean-info-buffer-active lean-show-goal-buffer-name))
+	(lean-get-info-record-at-point
+	 (lambda (info-record)
+	   (let ((state (plist-get info-record :state)))
+	     (unless (or (s-blank? state) (s-blank? (s-trim state)))
+	       (lean-with-info-output-to-buffer lean-show-goal-buffer-name (princ state))))))))))
 
 (defun lean-toggle-show-goal ()
   "Show goal at the current point."

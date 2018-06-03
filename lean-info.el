@@ -101,6 +101,8 @@
 (defun lean-find-definition ()
   "Jump to definition of thing at point"
   (interactive)
+  (setq lean-show-goal--handler-mask t) ; avoid the current request to the Lean server to by
+                                        ; interrupted by requests made for `lean-show-goal`
   (lean-get-info-record-at-point
    (lambda (info-record)
      (-if-let (source-record (plist-get info-record :source))
