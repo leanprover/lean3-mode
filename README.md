@@ -51,6 +51,7 @@ Key Bindings and Commands
 | <kbd>C-c C-d</kbd> | show a searchable list of definitions (`helm-lean-definitions`)                 |
 | <kbd>C-c C-g</kbd> | toggle showing current tactic proof goal (`lean-toggle-show-goal`)              |
 | <kbd>C-c C-n</kbd> | toggle showing next error in dedicated buffer (`lean-toggle-next-error`)        |
+| <kbd>C-c C-t</kbd> | apply `diff` to the expected / actual type in error messages (`lean-diff-types`)             |
 | <kbd>C-c C-b</kbd> | toggle showing output in inline boxes (`lean-message-boxes-toggle`)             |
 | <kbd>C-c C-r</kbd> | restart the lean server (`lean-server-restart`)                                 |
 | <kbd>C-c C-s</kbd> | switch to a different Lean version via [elan](https://github.com/Kha/elan) (`lean-server-switch-version`) |
