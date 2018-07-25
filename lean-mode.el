@@ -42,6 +42,7 @@
 (require 'lean-info)
 (require 'lean-hole)
 (require 'lean-type)
+(require 'lean-diff-types)
 (require 'lean-message-boxes)
 (require 'lean-right-click)
 (require 'lean-dev)
@@ -106,6 +107,7 @@
   (local-set-key lean-keybinding-leanpkg-configure         #'lean-leanpkg-configure)
   (local-set-key lean-keybinding-leanpkg-build             #'lean-leanpkg-build)
   (local-set-key lean-keybinding-leanpkg-test              #'lean-leanpkg-test)
+  (local-set-key lean-keybinding-diff-type                 #'lean-diff-type)
   ;; This only works as a mouse binding due to the event, so it is not abstracted
   ;; to avoid user confusion.
   (local-set-key (kbd "<mouse-3>")                         #'lean-right-click-show-menu)
