@@ -25,8 +25,10 @@
                          (const "reduce result")
                          (const "trace output"))))
 
-(defvar lean-message-boxes-enabledp nil
-  "Whether or not to display message boxes.")
+(defcustom lean-message-boxes-enabledp nil
+  "Whether or not to display message boxes."
+  :group 'lean
+  :type 'boolean)
 (make-variable-buffer-local 'lean-message-boxes-enabledp)
 
 (defun lean-message-boxes--ask-for-messages ()
