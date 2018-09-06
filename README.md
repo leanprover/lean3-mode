@@ -45,6 +45,7 @@ Key Bindings and Commands
 | Key                | Function                                                                        |
 |--------------------|---------------------------------------------------------------------------------|
 | <kbd>M-.</kbd>     | jump to definition in source file (`lean-find-definition`)                      |
+| <kbd>M-,</kbd>     | jump back to position before <kbd>M-.</kbd> (`xref-pop-marker-stack`)           |
 | <kbd>C-c C-k</kbd> | shows the keystroke needed to input the symbol under the cursor                 |
 | <kbd>C-c C-x</kbd> | execute lean in stand-alone mode (`lean-std-exe`)                               |
 | <kbd>C-c SPC</kbd> | run a command on the hole at point (`lean-hole`)                                |
