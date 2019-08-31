@@ -6,8 +6,6 @@
 
 ;;; Code:
 
-(require 'cl)
-
 (defun lean-eri-current-line-length nil
   "Calculate length of current line."
   (- (line-end-position) (line-beginning-position)))
