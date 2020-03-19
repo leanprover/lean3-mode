@@ -54,7 +54,7 @@
   "Checks whether the given info buffer should show info for the current buffer"
   (and
    ;; info buffer visible
-   (get-buffer-window buffer)
+   (get-buffer-window buffer 'visible)
    ;; current window of current buffer is selected (i.e., in focus)
    (eq (current-buffer) (window-buffer))))
 
