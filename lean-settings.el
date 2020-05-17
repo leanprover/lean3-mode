@@ -35,7 +35,7 @@
   :group 'lean
   :type 'string)
 
-(defcustom lean-memory-limit 1024
+(defcustom lean-memory-limit 4096
   "Memory limit for lean process in megabytes"
   :group 'lean
   :type 'number)
