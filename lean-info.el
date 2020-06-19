@@ -38,17 +38,44 @@
        (setq standard-output buf)
        . ,body)))
 
+(defvar lean-info-buffer-names '()
+  "These are the buffer names that `lean-toggle-info-buffer` will
+  look to see if have an open window, and if so, replace that
+  window's buffer.")
+
 (defun lean-ensure-info-buffer (buffer)
-  (unless (get-buffer buffer)
-    (with-current-buffer (get-buffer-create buffer)
-      (buffer-disable-undo)
-      (lean-info-mode))))
+  (if (stringp buffer)
+      (add-to-list 'lean-info-buffer-names buffer))
+  (let ((buf (get-buffer buffer)))
+    (unless buf
+      (setq buf (get-buffer-create buffer))
+      (with-current-buffer buf
+        (buffer-disable-undo)
+        (lean-info-mode)))
+    buf))
+
+(defun lean-locate-info-window ()
+  "Finds a window containing a buffer from
+`lean-info-buffer-names`, or nil if one does not exist"
+  (let (window)
+    (dolist (buffer lean-info-buffer-names window)
+      (setq window (or window (get-buffer-window buffer))))))
 
 (defun lean-toggle-info-buffer (buffer)
-  (-if-let (window (get-buffer-window buffer))
-      (quit-window nil window)
-    (lean-ensure-info-buffer buffer)
-    (display-buffer buffer)))
+  "If there is an info window and it corresponds to the given
+buffer, delete the window.  Otherwise, switch the info window to
+the given buffer, creating an info window if it does not already
+exist."
+  (let* ((buf (lean-ensure-info-buffer buffer))
+         (window (or (get-buffer-window buf) (lean-locate-info-window))))
+    (cond
+     ((and window (eq (window-buffer window) buf))
+      (delete-window window))
+     (window
+      (with-selected-window window
+        (switch-to-buffer buf)))
+     (t
+      (display-buffer buf)))))
 
 (defun lean-info-buffer-active (buffer)
   "Checks whether the given info buffer should show info for the current buffer"
