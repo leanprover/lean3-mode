@@ -61,15 +61,9 @@
   (interactive)
   (lean-message-boxes--set-enabledp nil))
 
-(defvar lean-message-boxes--overlays '()
-  "The overlays in the current buffer from Lean messages.")
-(make-variable-buffer-local 'lean-message-boxes--overlays)
-
 (defun lean-message-boxes--kill-overlays ()
   "Delete all Lean message overlays in the current buffer."
-  (dolist (o lean-message-boxes--overlays)
-    (delete-overlay o))
-  (setq lean-message-boxes--overlays '()))
+  (remove-overlays nil nil 'category 'lean-output))
 
 (defun lean-message-boxes--pad-to (str width)
   "Pad the string STR to a particular WIDTH."
@@ -85,10 +79,9 @@
             (caption (plist-get msg :caption))
             (text (plist-get msg :text)))
         (when (member caption lean-message-boxes-enabled-captions)
-          (let ((overlay (lean-message-boxes--make-overlay
-                          end-line end-col
-                          caption text)))
-            (push overlay lean-message-boxes--overlays)))))))
+          (lean-message-boxes--make-overlay
+           end-line end-col
+           caption text))))))
 
 (defun lean-message-boxes--as-string (caption str)
   "Construct a propertized string representing CAPTION and STR."
@@ -98,31 +91,37 @@
                        str-copy)
     (let* ((lines (s-lines str-copy))
            (w (apply #'max (mapcar #'length (cons caption lines)))))
-      (apply #'concat
-             (mapcar
-              (lambda (l)
-                (concat "│ "
-                        (lean-message-boxes--pad-to l w)
-                        "\n"))
-              lines)))))
+      (s-join "\n"
+              (mapcar
+               (lambda (l) (concat "│ " (lean-message-boxes--pad-to l w)))
+               lines)))))
+
+(defun lean-message-boxes--in-comment (pos)
+  "Use the faces set by `font-lock-mode` to deduce whether the
+character at the given position is contained within a comment."
+  (let ((faces (get-text-property pos 'face))
+        result)
+    (unless (listp faces)
+      (setq faces (list faces)))
+    (dolist (f faces result)
+      (setq result
+            (or result (-contains? '(font-lock-comment-face font-lock-comment-delimiter-face) f))))))
 
 (defun lean-message-boxes--make-overlay (end-line end-col caption text)
   "Construct a message box overlay at LINE and COL with CAPTION and TEXT."
   (let* ((end-pos (save-excursion (goto-char (point-min))
                                   (forward-line (1- end-line))
                                   (forward-char (1- end-col))
-                                  (while (looking-at-p "[\t\r\n ]")
+                                  (while (or (looking-at-p "[[:space:]\n]") (lean-message-boxes--in-comment (point)))
                                     (forward-char -1))
                                   (end-of-line)
-                                  (1+ (point))))
-         (overlay (make-overlay end-pos (1+ end-pos)))
-         (as-box (lean-message-boxes--as-string caption text)))
-    (put-text-property 0 1 'cursor t as-box)
-    (overlay-put overlay 'before-string as-box)
+                                  (point)))
+         (overlay (make-overlay end-pos end-pos nil t t))
+         (as-box (concat " \n" (lean-message-boxes--as-string caption text))))
+    (put-text-property 0 (length as-box) 'cursor t as-box)
+    (overlay-put overlay 'after-string as-box)
     (overlay-put overlay 'help-echo caption)
-    (overlay-put overlay 'lean-is-output-overlay t)
-    (overlay-put overlay 'evaporate t)
-    overlay))
+    (overlay-put overlay 'category 'lean-output)))
 
 (add-hook 'lean-server-show-message-hook 'lean-message-boxes-display)
 (provide 'lean-message-boxes)
