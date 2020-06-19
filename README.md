@@ -112,7 +112,8 @@ Building from Source
 When working on `lean-mode` itself, it is much easier to just `require` the sources than repeatedly building the MELPA packages:
 
 ```elisp
-(add-to-load-path "~/path/to/lean-mode/")
+(add-to-list 'load-path "~/path/to/lean-mode/")
+(require 'lean-mode)
 (require 'company-lean)
 (require 'helm-lean)
 ```

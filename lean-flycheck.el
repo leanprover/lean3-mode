@@ -82,7 +82,7 @@
                                             (lean-server-session-messages lean-server-session))))))))
 
 (defun lean-flycheck-init ()
-  "Initialize lean-flychek checker"
+  "Initialize lean-flycheck checker"
   (flycheck-define-generic-checker 'lean-checker
     "A Lean syntax checker."
     :start #'lean-flycheck-start
