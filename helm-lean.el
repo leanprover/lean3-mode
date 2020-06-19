@@ -49,7 +49,7 @@
   (interactive)
   (require 'helm)
   (helm :sources (helm-build-sync-source "helm-source-lean-definitions"
-                   :requires-pattern t
+                   :requires-pattern 1
                    :candidates 'helm-lean-definitions-candidates
                    :volatile t
                    :match 'identity
