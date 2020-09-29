@@ -1203,6 +1203,8 @@ Suitable for use in the :set field of `defcustom'."
 (provide 'lean-input)
 ;;; lean-input.el ends here
 
+(require 'dash)
+
 (defun lean-input-export-translations ()
   "Export the current translation, (input, output) pairs for
 input-method, in a javascript format. It can be copy-pasted to

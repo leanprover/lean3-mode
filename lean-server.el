@@ -26,7 +26,7 @@ least the following keys:
   :type 'hook
   :options '(lean-message-boxes-display))
 
-(defstruct lean-server-session
+(cl-defstruct lean-server-session
   path-file        ; the leanpkg.path file of this lean server
   process          ; process object of lean --server
   seq-num          ; sequence number

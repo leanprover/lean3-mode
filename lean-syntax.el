@@ -5,6 +5,7 @@
 ;;         Soonho Kong
 ;;
 
+(require 'dash)
 (require 'rx)
 
 (defconst lean-keywords1

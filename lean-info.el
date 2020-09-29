@@ -14,6 +14,7 @@
 ;; Released under Apache 2.0 license as described in the file LICENSE.
 ;;
 
+(require 'cl-lib)
 (require 'lean-syntax)
 
 ;; Lean Info Mode (for "*lean-info*" buffer)
@@ -30,7 +31,7 @@
   (set (make-local-variable 'lisp-indent-function)
        'common-lisp-indent-function))
 
-(defmacro lean-with-info-output-to-buffer (buffer &rest body)
+(cl-defmacro lean-with-info-output-to-buffer (buffer &rest body)
   `(let ((buf (get-buffer ,buffer)))
      (with-current-buffer buf
        (setq buffer-read-only nil)
