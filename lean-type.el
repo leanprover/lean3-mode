@@ -33,7 +33,7 @@
 
 (cl-defun lean-info-record-to-string (info-record)
   "Given typeinfo, overload, and sym-name, compose information as a string."
-  (destructuring-bind (&key type tactic_params tactic_param_idx text doc full-id &allow-other-keys) info-record
+  (cl-destructuring-bind (&key type tactic_params tactic_param_idx text doc full-id &allow-other-keys) info-record
     (let ((name-str (or full-id text))
           (type-str type)
           str)
