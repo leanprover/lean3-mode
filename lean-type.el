@@ -9,6 +9,7 @@
 (require 'dash)
 (require 'dash-functional)
 (require 's)
+(require 'lean-info)
 (require 'lean-util)
 (require 'lean-server)
 (require 'lean-debug)
