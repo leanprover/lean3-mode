@@ -9,7 +9,7 @@
 ;; Maintainer: Sebastian Ullrich <sebasti@nullri.ch>
 ;; Created: Jan 09, 2014
 ;; Keywords: languages
-;; Package-Requires: ((emacs "24.3") (dash "2.12.0") (dash-functional "1.2.0") (s "1.10.0") (f "0.19.0") (company "0.9.3") (lean-mode "3.3.0"))
+;; Package-Requires: ((emacs "24.3") (dash "2.18.0") (s "1.10.0") (f "0.19.0") (company "0.9.3") (lean-mode "3.3.0"))
 ;; URL: https://github.com/leanprover/lean-mode
 
 ;; Released under Apache 2.0 license as described in the file LICENSE.
@@ -23,7 +23,6 @@
 (require 'company)
 (require 'company-etags)
 (require 'dash)
-(require 'dash-functional)
 (require 'f)
 (require 's)
 (require 'cl-lib)

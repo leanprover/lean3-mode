@@ -7,7 +7,6 @@
 
 (require 'cl-lib)
 (require 'dash)
-(require 'dash-functional)
 (require 's)
 (require 'lean-info)
 (require 'lean-util)

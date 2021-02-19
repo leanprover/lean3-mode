@@ -8,7 +8,6 @@
 (require 'f)
 (require 's)
 (require 'dash)
-(require 'dash-functional)
 
 (defun lean-setup-rootdir ()
   (let ((root (executable-find lean-executable-name)))
