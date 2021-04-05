@@ -188,8 +188,13 @@ enabled and disabled respectively.")
   (lean-ensure-info-buffer lean-show-goal-buffer-name)
   ;; eldoc
   (when lean-eldoc-use
-    (set (make-local-variable 'eldoc-documentation-function)
-         'lean-eldoc-documentation-function)
+    (cond ((<= emacs-major-version 27)
+           (set (make-local-variable 'eldoc-documentation-function)
+                'lean-eldoc-documentation-function))
+          (t (add-hook 'eldoc-documentation-functions
+                       #'lean-eldoc-documentation-function nil t)
+             (setq-local eldoc-documentation-strategy
+                         'eldoc-documentation-default)))
     (eldoc-mode t)))
 
 ;; Automode List
