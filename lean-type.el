@@ -49,40 +49,48 @@
                           (propertize name-str 'face 'font-lock-variable-name-face)
                           type-str)))
       (when doc
-        (let* ((lines (split-string doc "\n"))
-               (doc (if (cdr lines)
-                        (concat (car lines) " ⋯")
-                      (car lines))))
+        (let ((doc (if (<= emacs-major-version 27)
+                       (let ((lines (split-string doc "\n")))
+                         (if (cdr lines)
+                             (concat (car lines) " ⋯")
+                           (car lines)))
+                     doc)))
           (setq str (concat str
                             (format "\n%s"
                                     (propertize doc 'face 'font-lock-comment-face))))))
       str)))
 
 (defvar-local lean-eldoc-documentation-cache nil)
+(defvar-local lean-add-to-kill-ring nil)
 
-(defun lean-eldoc-documentation-function-cont (info-record &optional add-to-kill-ring)
+(defun lean-eldoc-documentation-function-cont (info-record cb)
   "Continuation for lean-eldoc-documentation-function"
   (let ((info-string (and info-record (lean-info-record-to-string info-record))))
     (when info-string
-      (when add-to-kill-ring
+      (when lean-add-to-kill-ring
+        (setq lean-add-to-kill-ring nil)
         (kill-new
          (substring-no-properties info-string))))
     (setq lean-eldoc-documentation-cache (and info-string (format "%s" info-string)))
-    (eldoc-message lean-eldoc-documentation-cache)))
+    (funcall cb lean-eldoc-documentation-cache)))
 
-(defun lean-eldoc-documentation-function (&optional add-to-kill-ring)
-  "Show information of lean expression at point if any"
+(defun lean-eldoc-documentation-function (&optional cb)
+  "Show information of lean expression at point if any
+Takes as argument an optional callback function, which defaults to `eldoc-message`"
   (interactive)
   (when (not (eq lean-server-check-mode 'nothing)) ; TODO(gabriel): revisit once info no longer reparses the file
     (lean-get-info-record-at-point
      (lambda (info-record)
-       (lean-eldoc-documentation-function-cont info-record add-to-kill-ring)))
-    lean-eldoc-documentation-cache))
+       (lean-eldoc-documentation-function-cont info-record (or cb 'eldoc-message))))
+    'non-nil-non-string))
 
 (defun lean-show-type ()
   "Show information of lean-expression at point if any."
   (interactive)
-  (lean-eldoc-documentation-function lean-show-type-add-to-kill-ring))
+  (setq lean-add-to-kill-ring lean-show-type-add-to-kill-ring)
+  (if (<= emacs-major-version 27)
+      (lean-eldoc-documentation-function)
+    (eldoc-print-current-symbol-info t)))
 
 (defconst lean-show-goal-buffer-name "*Lean Goal*")
 
