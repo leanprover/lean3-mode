@@ -1,4 +1,4 @@
-This is the Emacs mode for the [Lean theorem prover][lean].
+This is the Emacs mode for the [Lean 3 theorem prover][lean].
 
 [lean]: https://github.com/leanprover/lean
 
