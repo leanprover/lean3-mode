@@ -1,4 +1,4 @@
-;;; lean-mode.el --- A major mode for the Lean language -*- lexical-binding: t -*-
+;;; lean-mode.el --- A major mode for the Lean 3 language -*- lexical-binding: t -*-
 
 ;; Copyright (c) 2013, 2014 Microsoft Corporation. All rights reserved.
 ;; Copyright (c) 2014, 2015 Soonho Kong. All rights reserved.
@@ -17,7 +17,7 @@
 
 ;;; Commentary:
 
-;; Provides a major mode for the Lean programming language.
+;; Provides a major mode for the Lean 3 programming language.
 
 ;; Provides highlighting, diagnostics, goal visualization,
 ;; and many other useful features for Lean users.
