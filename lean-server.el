@@ -435,11 +435,18 @@ asynchronous call into synchronous.")
 
 (defvar-local lean-server-sync-timer nil)
 
+(defvar lean-server-change-hook-delay "50 milliseconds"
+  "The amount of time to wait before syncing the lean server.
+
+This should be a string giving a relative time like \"90\" or \"2 hours 35 minutes\"
+(the acceptable forms are a number of seconds without units or
+some combination of values using units in timer-duration-words).
+")
 (defun lean-server-change-hook (_begin _end _len)
   (save-match-data
     (when lean-server-sync-timer (cancel-timer lean-server-sync-timer))
     (setq lean-server-sync-timer
-          (run-at-time "50 milliseconds" nil #'lean-server-sync (current-buffer)))))
+          (run-at-time lean-server-change-hook-delay nil #'lean-server-sync (current-buffer)))))
 
 (defun lean-server-compute-roi (sess)
   "Compute the region of interest for the session SESS."
