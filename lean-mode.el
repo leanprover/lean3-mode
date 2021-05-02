@@ -225,6 +225,12 @@ Invokes `lean-mode-hook'.
   ;; (abbrev-mode 1)
   (pcase-dolist (`(,hook . ,fn) lean-hooks-alist)
     (add-hook hook fn nil 'local))
+  (setq imenu-generic-expression '(("Inductive" "^ *\\(?:@\\[.*\\]\\)? *inductive +\\([^\n ]+\\)" 1)
+                                   ("Function" "^ *\\(?:@\\[.*\\]\\)? *def +\\([^\n ]+\\)" 1)
+                                   ("Lemma" "^ *\\(?:@\\[.*\\]\\)? *lemma +\\([^\n ]+\\)" 1)
+                                   ("Theorem" "^ *\\(?:@\\[.*\\]\\)? *theorem +\\([^\n ]+\\)" 1)
+                                   ("Theorem" "^ *\\(?:@\\[.*\\]\\)? *theorem +\\([^\n ]+\\)" 1)
+                                   ("Namespace" "^ *\\(?:@\\[.*\\]\\)? *namespace +\\([^\n ]+\\)" 1)))
   (lean-mode-setup))
 
 ;; Automatically use lean-mode for .lean files.
