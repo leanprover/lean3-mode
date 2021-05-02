@@ -426,6 +426,7 @@ asynchronous call into synchronous.")
 
 (defun lean-server-sync (&optional buf)
   "Synchronizes the state of BUF (or the current buffer, if nil) with the lean server"
+  (interactive)
   (with-demoted-errors "lean server sync: %s"
     (with-current-buffer (or buf (current-buffer))
       (lean-server-sync-roi)
@@ -435,6 +436,16 @@ asynchronous call into synchronous.")
 
 (defvar-local lean-server-sync-timer nil)
 
+(defvar lean-server-sync-on-change t
+  "When the value is t, sync the server when the buffer is changed.")
+
+(defun lean-server-toggle-update-on-change ()
+  "Toggle whether the server should be synced when the buffer is changed."
+  (interactive)
+  (setq lean-server-sync-on-change (not lean-server-sync-on-change))
+  (when lean-server-sync-on-change
+    (lean-server-sync)))
+
 (defvar lean-server-change-hook-delay "50 milliseconds"
   "The amount of time to wait before syncing the lean server.
 
@@ -442,11 +453,13 @@ This should be a string giving a relative time like \"90\" or \"2 hours 35 minut
 (the acceptable forms are a number of seconds without units or
 some combination of values using units in timer-duration-words).
 ")
+
 (defun lean-server-change-hook (_begin _end _len)
-  (save-match-data
-    (when lean-server-sync-timer (cancel-timer lean-server-sync-timer))
-    (setq lean-server-sync-timer
-          (run-at-time lean-server-change-hook-delay nil #'lean-server-sync (current-buffer)))))
+  (when lean-server-sync-on-change
+    (save-match-data
+      (when lean-server-sync-timer (cancel-timer lean-server-sync-timer))
+      (setq lean-server-sync-timer
+            (run-at-time lean-server-change-hook-delay nil #'lean-server-sync (current-buffer))))))
 
 (defun lean-server-compute-roi (sess)
   "Compute the region of interest for the session SESS."
