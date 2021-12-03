@@ -635,7 +635,9 @@ order for the change to take effect."
                                                ⍉⍊⍋⍌⍍⍎⍏⍐⍑⍒⍓⍔⍕⍖⍗⍘⍙⍚⍛
                                                ⍜⍝⍞⍟⍠⍡⍢⍣⍤⍥⍦⍧⍨⍩⍪⍫⍬⍭⍮
                                                ⍯⍰⍱⍲⍳⍴⍵⍶⍷⍸⍹⍺⎕"))
-
+  ("/"         . ("⧸"))
+  ("quot"      . ("⧸"))
+                                      
   ;; Some combining characters.
   ;;
   ;; The following combining characters also have (other)
