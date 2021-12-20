@@ -1078,6 +1078,7 @@ order for the change to take effect."
   ("bigcoprod" . ("∐"))
   ("xf" . ("×ᶠ"))
   ("exf" . ("∃ᶠ"))
+  ("specializes" . ("⤳"))
   ))
   "A list of translations specific to the Lean input method.
 Each element is a pair (KEY-SEQUENCE-STRING . LIST-OF-TRANSLATION-STRINGS).
