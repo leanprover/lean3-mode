@@ -77,13 +77,14 @@
 
 (defun lean-check-expansion ()
   (interactive)
-  (save-excursion
-    (if (looking-at (rx symbol-start "_")) t
-      (if (looking-at "\\_>") t
+  (or (looking-at (rx symbol-start "_"))
+      (looking-at (rx symbol-end))
+      (save-excursion
         (backward-char 1)
-        (if (looking-at "\\.") t
-          (backward-char 1)
-          (if (looking-at "->") t nil))))))
+        (or (looking-at (rx "."))
+            (progn
+              (backward-char 1)
+              (looking-at "->"))))))
 
 (defun lean-tab-indent ()
   (interactive)
