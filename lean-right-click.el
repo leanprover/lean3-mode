@@ -10,6 +10,8 @@
 
 ;;; Code:
 
+(require 'lean-server)
+
 (defvar lean-right-click-item-functions nil
   "A list of functions to compute menu items from source locations.
 
