@@ -5,7 +5,6 @@
 ;;         Soonho Kong
 ;;
 
-(require 'dash)
 (require 'rx)
 
 (defconst lean-keywords1
@@ -141,6 +140,6 @@
            (,(rx line-start "No Goal" line-end)
             . 'font-lock-constant-face)))
         (inherited-entries (car lean-font-lock-defaults)))
-    `(,(-concat new-entries inherited-entries))))
+    `(,(append new-entries inherited-entries))))
 
 (provide 'lean-syntax)
