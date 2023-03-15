@@ -1,11 +1,9 @@
-;; Copyright (c) 2013, 2014 Microsoft Corporation. All rights reserved.
+;; Copyright (c) 2013, 2014 Microsoft Corporation. All rights reserved.  -*- lexical-binding: t; -*-
 ;; Released under Apache 2.0 license as described in the file LICENSE.
 ;;
 ;; Author: Leonardo de Moura
 ;;         Soonho Kong
 ;;
-
-(require 'rx)
 
 (defconst lean-keywords1
   '("import" "prelude" "protected" "private" "noncomputable" "definition" "meta" "renaming"
@@ -21,9 +19,11 @@
     "calc" "have" "show" "suffices" "by" "in" "at" "do" "let" "forall" "Pi" "fun"
     "exists" "if" "then" "else" "assume" "from"
     "mutual" "def" "run_cmd")
-  "lean keywords ending with 'word' (not symbol)")
+  "Lean keywords ending with word (not symbol).")
+
 (defconst lean-keywords1-regexp
-  (eval `(rx word-start (or ,@lean-keywords1) word-end)))
+  (regexp-opt lean-keywords1 'words))
+
 (defconst lean-constants
   '("#" "@" "!" "$" "->" "∼" "↔" "/" "==" "=" ":=" "<->" "/\\" "\\/" "∧" "∨"
     "≠" "<" ">" "≤" "≥" "¬" "<=" ">=" "⁻¹" "⬝" "▸" "+" "*" "-" "/" "λ"
@@ -32,17 +32,18 @@
     "⬝e" "⬝i" "⬝o" "⬝op" "⬝po" "⬝h" "⬝v" "⬝hp" "⬝vp" "⬝ph" "⬝pv" "⬝r" "◾" "◾o"
     "∘n" "∘f" "∘fi" "∘nf" "∘fn" "∘n1f" "∘1nf" "∘f1n" "∘fn1"
     "^c" "≃c" "≅c" "×c" "×f" "×n" "+c" "+f" "+n" "ℕ₋₂")
-  "lean constants")
+  "Lean constants.")
+
 (defconst lean-constants-regexp (regexp-opt lean-constants))
+
 (defconst lean-numerals-regexp
-  (eval `(rx word-start
-             (one-or-more digit) (optional (and "." (zero-or-more digit)))
-             word-end)))
+  (rx word-start (+ digit) (? (and "." (* digit))) word-end))
 
-(defconst lean-warnings '("sorry" "exit") "lean warnings")
+(defconst lean-warnings '("sorry" "exit")
+  "Lean warnings.")
+
 (defconst lean-warnings-regexp
-  (eval `(rx word-start (or ,@lean-warnings) word-end)))
-
+  (regexp-opt lean-warnings 'words))
 
 (defconst lean-syntax-table
   (let ((st (make-syntax-table)))
@@ -122,8 +123,7 @@
      (,(rx (and (group "«") (group (one-or-more (not (any "»")))) (group "»")))
       (1 font-lock-comment-face t)
       (2 nil t)
-      (3 font-lock-comment-face t))
-     )))
+      (3 font-lock-comment-face t)))))
 
 ;; Syntax Highlighting for Lean Info Mode
 (defconst lean-info-font-lock-defaults
