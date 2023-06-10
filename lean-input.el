@@ -58,12 +58,12 @@ removing all space and newline characters."
 ;; lexical-let is used since Elisp lacks lexical scoping.
 
 (defun lean-input-compose (f g)
-  "\x -> concatMap F (G x)"
+  "λx -> concatMap F (G x)"
   (lexical-let ((f1 f) (g1 g))
     (lambda (x) (lean-input-concat-map f1 (funcall g1 x)))))
 
 (defun lean-input-or (f g)
-  "\x -> F x ++ G x"
+  "λx -> F x ++ G x"
   (lexical-let ((f1 f) (g1 g))
     (lambda (x) (append (funcall f1 x) (funcall g1 x)))))
 
